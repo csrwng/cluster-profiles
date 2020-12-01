@@ -24,17 +24,19 @@ Scripts to help automating cluster profile annotations on OpenShift release mani
    The result of the above command should be a space-separated file that contains the following
    columns: 1) component, 2) git repo, 3) filename in repo, 4) filename in release payload.
 
-2. Use the clone-repos.py script to create local clones of all the repos in the release-manifests.txt file:
+2. Use the clone-repos.py script to create local clones of all the repos in the manifests.txt file:
    `./clone_repos.py --basedir BASE_DIRECTORY --branch YOUR_BRANCH --inputfile manifests.txt`
    BASE_DIRECTORY is the directory in your machine where you want to place all cloned repositories,
    YOUR_BRANCH is the branch name you want to use for your modifications. This script uses
    `gh repo fork` which will fork repositories that you don't have a fork of, and reuse your existing
-   fork if you have one.
+   fork if you have one. If cloning fails at some point, simply re-run the command above. It will skip
+   repositories for which a directory already exists.
 
 ## Applying Your Annotation to Manifests
 
 1. Match manifests in release image to files on your computer with `match-manifests.py`. Run:
    `match-manifests.py --basedir BASE_DIRECTORY --inputfile manifests.txt > manifests-with-files.txt`
+   Where BASE_DIRECTORY is the same directory you used to clone the repositories above.
    This command outputs the list of manifests matched with files on your machine. For files not found,
    it uses a placeholder `MISSING`.
 
